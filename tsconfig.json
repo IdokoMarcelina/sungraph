@@ -1,4 +1,16 @@
 {
-  "extends": "@graphprotocol/graph-ts/types/tsconfig.base.json",
-  "include": ["src", "tests"]
+  "compilerOptions": {
+    "target": "es2017",
+    "lib": ["es6", "es2017"],
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "typeRoots": ["./node_modules/@types", "./node_modules/@graphprotocol/graph-ts/types"]
+  },
+  "include": ["src/**/*", "tests/**/*", "generated/**/*"],
+  "exclude": ["node_modules", "dist", "build"]
 }

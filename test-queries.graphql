@@ -1,0 +1,154 @@
+# Sample GraphQL queries for the cleaned-up staking subgraph
+
+# Query all staking events
+query GetAllStakes {
+  stakeds(first: 10, orderBy: blockTimestamp, orderDirection: desc) {
+    id
+    user
+    amount
+    timestamp
+    newTotalStaked
+    currentRewardRate
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}
+
+# Query all withdrawal events
+query GetAllWithdrawals {
+  withdrawns(first: 10, orderBy: blockTimestamp, orderDirection: desc) {
+    id
+    user
+    amount
+    timestamp
+    newTotalStaked
+    currentRewardRate
+    rewardsAccrued
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}
+
+# Query all emergency withdrawal events
+query GetAllEmergencyWithdrawals {
+  emergencyWithdrawns(first: 10, orderBy: blockTimestamp, orderDirection: desc) {
+    id
+    user
+    amount
+    penalty
+    timestamp
+    newTotalStaked
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}
+
+# Query all reward claims
+query GetAllRewardClaims {
+  rewardsClaimeds(first: 10, orderBy: blockTimestamp, orderDirection: desc) {
+    id
+    user
+    amount
+    timestamp
+    newPendingRewards
+    totalStaked
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}
+
+# Query events for a specific user
+query GetUserStakingActivity($userAddress: Bytes!) {
+  stakeds(where: { user: $userAddress }, orderBy: blockTimestamp, orderDirection: desc) {
+    id
+    amount
+    timestamp
+    newTotalStaked
+    currentRewardRate
+    blockTimestamp
+    transactionHash
+  }
+  
+  withdrawns(where: { user: $userAddress }, orderBy: blockTimestamp, orderDirection: desc) {
+    id
+    amount
+    timestamp
+    newTotalStaked
+    rewardsAccrued
+    blockTimestamp
+    transactionHash
+  }
+  
+  emergencyWithdrawns(where: { user: $userAddress }, orderBy: blockTimestamp, orderDirection: desc) {
+    id
+    amount
+    penalty
+    timestamp
+    blockTimestamp
+    transactionHash
+  }
+  
+  rewardsClaimeds(where: { user: $userAddress }, orderBy: blockTimestamp, orderDirection: desc) {
+    id
+    amount
+    timestamp
+    newPendingRewards
+    blockTimestamp
+    transactionHash
+  }
+}
+
+# Query recent staking activity (last 24 hours)
+query GetRecentStakingActivity($timestamp: BigInt!) {
+  stakeds(
+    where: { blockTimestamp_gte: $timestamp }
+    orderBy: blockTimestamp
+    orderDirection: desc
+  ) {
+    id
+    user
+    amount
+    timestamp
+    newTotalStaked
+    currentRewardRate
+    blockTimestamp
+    transactionHash
+  }
+  
+  withdrawns(
+    where: { blockTimestamp_gte: $timestamp }
+    orderBy: blockTimestamp
+    orderDirection: desc
+  ) {
+    id
+    user
+    amount
+    timestamp
+    newTotalStaked
+    rewardsAccrued
+    blockTimestamp
+    transactionHash
+  }
+}
+
+# Query staking events with amount filter
+query GetLargeStakes($minAmount: BigInt!) {
+  stakeds(
+    where: { amount_gte: $minAmount }
+    orderBy: amount
+    orderDirection: desc
+  ) {
+    id
+    user
+    amount
+    timestamp
+    newTotalStaked
+    currentRewardRate
+    blockTimestamp
+    transactionHash
+  }
+}
